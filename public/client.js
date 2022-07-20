@@ -3,7 +3,7 @@ let sound = new Audio("music.mp3");
 let name;
 let textarea = document.querySelector('#textarea')
 let messageArea = document.querySelector('.message__area')
-
+let send = document.querySelector("#send")
 
 
 do {
@@ -18,6 +18,14 @@ textarea.addEventListener('keyup', (e) => {
     if(e.key === 'Enter') {
         sendMessage(e.target.value)
     }
+})
+
+send.addEventListener("click",()=>{
+sendMessage(textarea.value)
+})
+
+send.addEventListener("touchstart",()=>{
+    sendMessage(textarea.value)
 })
 
 function sendMessage(message) {
@@ -42,8 +50,8 @@ function appendMessage(msg, type) {
     mainDiv.classList.add(className, 'message')
 
     let markup = `
-        <h4>${msg.user}</h4>
-        <p>${msg.message}</p>
+        <h4 style="color:white">${msg.user}</h4>
+        <p style="blue: #F06D06">${msg.message}</p>
     `
     mainDiv.innerHTML = markup
     messageArea.appendChild(mainDiv)
@@ -54,6 +62,10 @@ socket.on('message', (msg) => {
     appendMessage(msg, 'incoming')
    
     scrollToBottom()
+})
+
+socket.on('leave',(name)=>{
+    alert(`${name} left the chat`)
 })
 
 function scrollToBottom() {

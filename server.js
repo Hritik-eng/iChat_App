@@ -18,14 +18,21 @@ app.get('/', (req, res) => {
 
 // Socket 
 const io = require('socket.io')(http)
-
+var users = {};
 io.on('connection', (socket) => {
     console.log('Connected...')
     socket.on("new-user",(name)=>{
-        socket.broadcast.emit("user",name)
+        users[socket.id] = name
+        socket.broadcast.emit("user",users[socket.id])
     })
     socket.on('message', (msg) => {
         socket.broadcast.emit('message', msg)
     })
+
+    socket.on('disconnect', ()=>{
+        // if someone leaves the chat , let other user know.
+           socket.broadcast.emit('leave',users[socket.id] );
+           delete users[socket.id];
+       });
 
 })

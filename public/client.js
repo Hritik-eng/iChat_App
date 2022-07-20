@@ -24,7 +24,7 @@ send.addEventListener("click",()=>{
 sendMessage(textarea.value)
 })
 
-send.addEventListener("touchstart",()=>{
+send.addEventListener("touchend",()=>{
     sendMessage(textarea.value)
 })
 
